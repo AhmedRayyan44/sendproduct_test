@@ -83,7 +83,7 @@ def send_product_data_to_telegram():
                 print("-" * 50)
 
         bot_token = "7314487385:AAECe-a77OC8U4Rg0OVuXbi2yAKvg-kFhjM"
-        chat_id = "-1002232890869"
+        chat_id = "@dzrtproduct"
         telegram_api_url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
 
         for product_data in product_data_list:
