@@ -43,7 +43,7 @@ def extract_product_details(product_url):
         html_content = response.content
         soup = BeautifulSoup(html_content, "html.parser")
         product_name = soup.find("span", class_="base", itemprop="name").text.strip()
-        product_status_element = soup.find("div", class_="stock available").span
+        product_status_element = soup.find("div", class_="stock unavailable").span
         product_status = product_status_element.text.strip() if product_status_element else None
 
         # Extract all image URLs and find the one containing the desired pattern
@@ -82,8 +82,8 @@ def send_product_data_to_telegram():
                 print(f"Image URL: {image_url}")
                 print("-" * 50)
 
-        bot_token = "7314487385:AAECe-a77OC8U4Rg0OVuXbi2yAKvg-kFhjM"
-        chat_id = "@dzrtproduct"
+        bot_token = "7255964467:AAG0G3rU0QxMq--_6rv7kxcGvHI-r0hDDTw"
+        chat_id = "@Dezerrt"
         telegram_api_url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
 
         for product_data in product_data_list:
@@ -92,7 +92,7 @@ def send_product_data_to_telegram():
             product_url = product_data.get("url", "")
             image_url = product_data.get("image_url", "")
 
-            if product_status == "متوفر" and product_name not in excluded_products:
+            if product_status == "سيتم توفيرها في المخزون قريباً" and product_name not in excluded_products:
                 current_time = time.time()
                 if product_name in special_products:
                     if (product_name not in sent_products) or (current_time - product_send_times.get(product_name, 0) >= (3 * 600)):
