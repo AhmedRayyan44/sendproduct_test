@@ -44,7 +44,6 @@ def extract_product_details(product_url):
         product_name = soup.find("span", class_="base", itemprop="name").text.strip()
         product_status_element = soup.find("div", class_="stock unavailable").span
         product_status = product_status_element.text.strip() if product_status_element else None
-
         # Extract all image URLs and find the one containing the desired pattern
         images = soup.find_all("img")
         pattern = "https://assets.dzrt.com/media/catalog/product/cache/bd08de51ffb7051e85ef6e224cd8b890/"
@@ -78,17 +77,14 @@ def send_product_data_to_telegram():
                 print(f"Product Status: {product_status}")
                 print(f"Image URL: {image_url}")
                 print("-" * 50)
-        
         bot_token = "7255964467:AAG0G3rU0QxMq--_6rv7kxcGvHI-r0hDDTw"
         chat_id = "@Dezerrt"
         telegram_api_url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
-        
         for product_data in product_data_list:
             product_name = product_data.get("name", "")
             product_status = product_data.get("status", "")
             product_url = product_data.get("url", "")
             image_url = product_data.get("image_url", "")
-            
             if product_status == "سيتم توفيرها في المخزون قريباً" and product_name not in excluded_products:
                 current_time = time.time()
                 if product_name in special_products:
@@ -96,7 +92,7 @@ def send_product_data_to_telegram():
                         message_text = f"✅ ** المنتج متاح ** ✅: {product_name}"
                         reply_markup = {
                             "inline_keyboard": [
-                                [{"text": "🔍 عرض المنتج", "url": product_url}
+                                [{"text": "🔍 عرض المنتج", "url": product_url}]
                             ]
                         }
                         params = {
@@ -117,7 +113,7 @@ def send_product_data_to_telegram():
                         message_text = f"✅ ** المنتج متاح ** ✅: {product_name}"
                         reply_markup = {
                             "inline_keyboard": [
-                                [{"text": "🔍 عرض المنتج", "url": product_url}
+                                [{"text": "🔍 عرض المنتج", "url": product_url}]
                             ]
                         }
                         params = {
@@ -132,7 +128,6 @@ def send_product_data_to_telegram():
                             sent_products.append(product_name)
                         else:
                             print(f"Failed to send product data for {product_name}. Status code: {response.status_code}")
-        
         if time.time() - last_clear_time >= 60:
             sent_products = [product for product in sent_products if product in special_products]
             last_clear_time = time.time()
